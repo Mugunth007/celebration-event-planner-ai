@@ -17,7 +17,7 @@ const MainContent: React.FC = () => {
   const { activeTab } = useEvent();
 
   return (
-    <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 w-full flex-1">
+    <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full flex-1">
       {activeTab === 'overview' && <OverviewTab />}
       {activeTab === 'chat' && <AIChatDrawer />}
       {activeTab === 'budget' && <BudgetTracker />}
@@ -34,11 +34,19 @@ export function App() {
   return (
     <AuthProvider>
       <EventProvider>
-        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-purple-500 selection:text-white">
-          <Navbar />
-          <TabNavigation />
-          <MainContent />
-          <Footer />
+        <div className="relative min-h-screen bg-black text-neutral-200 flex flex-col font-sans selection:bg-purple-600 selection:text-white overflow-x-hidden">
+          {/* Aceternity Signature Background Grid Pattern */}
+          <div className="fixed inset-0 bg-grid-pattern pointer-events-none opacity-50 radial-mask z-0" />
+          
+          {/* Aceternity Ambient Spotlight Glow */}
+          <div className="fixed -top-40 left-1/2 -translate-x-1/2 w-[680px] h-[400px] bg-gradient-to-tr from-purple-600/20 via-indigo-500/15 to-pink-500/15 blur-[120px] rounded-full pointer-events-none z-0" />
+
+          <div className="relative z-10 flex flex-col min-h-screen">
+            <Navbar />
+            <TabNavigation />
+            <MainContent />
+            <Footer />
+          </div>
         </div>
       </EventProvider>
     </AuthProvider>

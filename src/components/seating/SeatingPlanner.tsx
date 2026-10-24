@@ -5,8 +5,6 @@ import {
   Trash2,
   Edit2,
   AlertTriangle,
-  Sparkles,
-  ShieldAlert,
   CheckCircle2,
   UserPlus
 } from 'lucide-react';
@@ -18,7 +16,6 @@ import { fireCelebrationConfetti } from '../common/ConfettiTrigger';
 
 export const SeatingPlanner: React.FC = () => {
   const {
-    event,
     tables,
     guests,
     addTable,
@@ -37,7 +34,6 @@ export const SeatingPlanner: React.FC = () => {
   const totalAssigned = guests.filter(g => g.tableId).length;
   const unassignedGuests = guests.filter(g => !g.tableId && g.rsvpStatus !== 'declined');
 
-  // Conflict detection
   const overcapacityTables = tables.filter(t => t.assignedGuestIds.length > t.capacity);
   const unseatedVips = unassignedGuests.filter(g => g.group === 'vip');
 
@@ -78,21 +74,21 @@ export const SeatingPlanner: React.FC = () => {
   return (
     <div className="space-y-6 animate-in fade-in">
       {/* Header & Metrics */}
-      <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 sm:p-8 rounded-3xl aceternity-card shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-amber-400 mb-1">
             <Users className="w-5 h-5" />
-            <h2 className="text-lg font-bold text-white">Interactive Seating &amp; Table Arrangement</h2>
+            <h2 className="text-base font-bold text-white tracking-tight">Interactive Seating &amp; Table Arrangement</h2>
           </div>
-          <p className="text-xs text-slate-400">
-            {totalAssigned} seated / {guests.length} roster guests • {tables.length} tables ({totalSeats} total chairs available)
+          <p className="text-xs text-neutral-400">
+            {totalAssigned} seated / {guests.length} roster guests • {tables.length} tables ({totalSeats} chairs available)
           </p>
         </div>
 
         <div className="flex flex-wrap items-center gap-2">
           <button
             onClick={() => setIsTableModalOpen(true)}
-            className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-800 hover:bg-slate-700 border border-slate-700 rounded-xl transition"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-medium text-neutral-300 bg-neutral-900 hover:bg-neutral-800 border border-white/[0.08] hover:border-white/[0.18] rounded-full transition"
           >
             <Plus className="w-3.5 h-3.5 text-purple-400" />
             <span>Add Table</span>
@@ -100,7 +96,7 @@ export const SeatingPlanner: React.FC = () => {
 
           <button
             onClick={handleAddGuest}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 text-xs font-semibold text-white bg-purple-600 hover:bg-purple-500 rounded-xl transition shadow-md shadow-purple-900/30"
+            className="flex items-center gap-1.5 px-4 py-1.5 text-xs font-semibold text-white bg-purple-600 hover:bg-purple-500 rounded-full transition shadow-[0_0_15px_rgba(168,85,247,0.3)]"
           >
             <UserPlus className="w-3.5 h-3.5" />
             <span>Add Guest</span>
@@ -110,7 +106,7 @@ export const SeatingPlanner: React.FC = () => {
 
       {/* Autonomous Seating Conflict Alerts */}
       {(overcapacityTables.length > 0 || unseatedVips.length > 0) && (
-        <div className="p-4 rounded-2xl bg-amber-950/30 border border-amber-500/40 text-xs text-amber-200 space-y-2">
+        <div className="p-4 sm:p-5 rounded-2xl bg-amber-950/25 border border-amber-500/35 text-xs text-amber-200 space-y-2">
           <div className="flex items-center gap-2 font-bold text-amber-400">
             <AlertTriangle className="w-4 h-4 shrink-0" />
             <span>Aura Seating Conflict Resolution Alerts:</span>
@@ -138,31 +134,27 @@ export const SeatingPlanner: React.FC = () => {
           return (
             <div
               key={table.id}
-              className={`p-5 rounded-3xl border transition shadow-lg flex flex-col justify-between ${
-                isOver
-                  ? 'bg-rose-950/20 border-rose-500/50'
-                  : isFull
-                  ? 'bg-slate-900/90 border-slate-700/80'
-                  : 'bg-slate-900 border-slate-800'
+              className={`p-6 rounded-3xl aceternity-card transition shadow-xl flex flex-col justify-between ${
+                isOver ? 'border-rose-500/50 bg-rose-950/15' : ''
               }`}
             >
               <div>
-                <div className="flex items-center justify-between pb-3 border-b border-slate-800/80">
+                <div className="flex items-center justify-between pb-3.5 border-b border-white/[0.08]">
                   <div className="space-y-0.5">
-                    <h3 className="font-bold text-sm text-white">{table.name}</h3>
-                    <div className="flex items-center gap-2 text-[10px] text-slate-400 capitalize">
+                    <h3 className="font-bold text-sm text-white tracking-tight">{table.name}</h3>
+                    <div className="flex items-center gap-2 text-[10px] text-neutral-400 capitalize">
                       <span>{table.shape} table</span>
                     </div>
                   </div>
 
                   <div className="flex items-center gap-2">
                     <span
-                      className={`px-2.5 py-1 rounded-full text-[10px] font-bold border ${
+                      className={`px-3 py-1 rounded-full text-[10px] font-bold border ${
                         isOver
                           ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
                           : isFull
                           ? 'bg-purple-500/20 text-purple-300 border-purple-500/40'
-                          : 'bg-slate-800 text-slate-300 border-slate-700'
+                          : 'bg-neutral-900 text-neutral-300 border-white/[0.08]'
                       }`}
                     >
                       {seatedGuests.length} / {table.capacity} Seats
@@ -170,7 +162,7 @@ export const SeatingPlanner: React.FC = () => {
 
                     <button
                       onClick={() => deleteTable(table.id)}
-                      className="p-1 text-slate-500 hover:text-rose-400 rounded-lg hover:bg-slate-800 transition"
+                      className="p-1 text-neutral-500 hover:text-rose-400 rounded-lg hover:bg-neutral-800 transition"
                       title="Delete Table"
                     >
                       <Trash2 className="w-3.5 h-3.5" />
@@ -179,17 +171,17 @@ export const SeatingPlanner: React.FC = () => {
                 </div>
 
                 {/* Seated Guests List */}
-                <div className="mt-3 space-y-2 min-h-[90px]">
+                <div className="mt-3.5 space-y-2 min-h-[90px]">
                   {seatedGuests.map((guest) => (
                     <div
                       key={guest.id}
-                      className="p-2 rounded-xl bg-slate-950/80 border border-slate-800/80 flex items-center justify-between text-xs group"
+                      className="p-2.5 rounded-xl bg-white/[0.03] border border-white/[0.06] hover:border-white/[0.14] flex items-center justify-between text-xs group transition"
                     >
                       <div className="flex items-center gap-2 truncate">
                         {guest.group === 'vip' && <span className="text-amber-400">⭐</span>}
-                        <span className="font-medium text-slate-200 truncate">{guest.name}</span>
+                        <span className="font-medium text-neutral-200 truncate">{guest.name}</span>
                         {guest.dietary && guest.dietary !== 'none' && (
-                          <span className={`px-1.5 py-0.2 rounded text-[9px] font-semibold uppercase border ${dietaryColors[guest.dietary].badge}`}>
+                          <span className={`px-2 py-0.5 rounded-full text-[9px] font-semibold uppercase border ${dietaryColors[guest.dietary].badge}`}>
                             {dietaryColors[guest.dietary].label}
                           </span>
                         )}
@@ -198,14 +190,14 @@ export const SeatingPlanner: React.FC = () => {
                       <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition">
                         <button
                           onClick={() => handleEditGuest(guest)}
-                          className="p-1 text-slate-400 hover:text-white"
+                          className="p-1 text-neutral-400 hover:text-white"
                           title="Edit Guest"
                         >
                           <Edit2 className="w-3 h-3" />
                         </button>
                         <button
                           onClick={() => assignGuestToTable(guest.id, null)}
-                          className="p-1 text-slate-400 hover:text-rose-400"
+                          className="p-1 text-neutral-400 hover:text-rose-400"
                           title="Unseat Guest"
                         >
                           <Trash2 className="w-3 h-3" />
@@ -215,8 +207,8 @@ export const SeatingPlanner: React.FC = () => {
                   ))}
 
                   {seatedGuests.length === 0 && (
-                    <div className="h-full flex items-center justify-center text-center text-slate-500 text-xs py-6">
-                      Empty table — Assign guests from the unassigned roster below.
+                    <div className="h-full flex items-center justify-center text-center text-neutral-500 text-xs py-6">
+                      Empty table — Assign guests from the pool below.
                     </div>
                   )}
                 </div>
@@ -224,7 +216,7 @@ export const SeatingPlanner: React.FC = () => {
 
               {/* Quick Seat Assignment Picker */}
               {unassignedGuests.length > 0 && !isFull && (
-                <div className="mt-4 pt-3 border-t border-slate-800/80">
+                <div className="mt-4 pt-3.5 border-t border-white/[0.08]">
                   <select
                     defaultValue=""
                     onChange={(e) => {
@@ -233,7 +225,7 @@ export const SeatingPlanner: React.FC = () => {
                         e.target.value = '';
                       }
                     }}
-                    className="w-full px-2.5 py-1.5 bg-slate-950 border border-slate-800 hover:border-purple-500/40 rounded-xl text-xs text-slate-300 focus:outline-none"
+                    className="w-full px-3 py-1.5 bg-neutral-900 border border-white/[0.08] hover:border-purple-500/40 rounded-full text-xs text-neutral-300 focus:outline-none"
                   >
                     <option value="">+ Seat Unassigned Guest...</option>
                     {unassignedGuests.map((u) => (
@@ -250,15 +242,15 @@ export const SeatingPlanner: React.FC = () => {
       </div>
 
       {/* Unassigned Guests Pool */}
-      <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-4">
+      <div className="p-6 sm:p-7 rounded-3xl aceternity-card shadow-2xl space-y-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
             <Users className="w-4 h-4 text-purple-400" />
-            <h3 className="text-sm font-bold text-white uppercase tracking-wider">
+            <h3 className="text-xs font-bold text-neutral-300 uppercase tracking-wider">
               Unassigned Guest Pool ({unassignedGuests.length})
             </h3>
           </div>
-          <span className="text-xs text-slate-400">
+          <span className="text-xs text-neutral-400">
             Select a table to seat each attendee
           </span>
         </div>
@@ -268,17 +260,17 @@ export const SeatingPlanner: React.FC = () => {
             {unassignedGuests.map((g) => (
               <div
                 key={g.id}
-                className="p-3 rounded-2xl bg-slate-950/70 border border-slate-800 flex items-center justify-between gap-3 text-xs"
+                className="p-3.5 rounded-2xl bg-white/[0.03] border border-white/[0.08] hover:border-white/[0.16] flex items-center justify-between gap-3 text-xs transition"
               >
                 <div className="space-y-0.5 truncate">
                   <div className="flex items-center gap-1.5">
                     {g.group === 'vip' && <span className="text-amber-400">⭐</span>}
-                    <span className="font-semibold text-slate-100 truncate">{g.name}</span>
+                    <span className="font-semibold text-neutral-100 truncate">{g.name}</span>
                   </div>
-                  <div className="text-[10px] text-slate-400 flex items-center gap-1.5">
+                  <div className="text-[10px] text-neutral-400 flex items-center gap-1.5">
                     <span className="capitalize">{g.group}</span>
                     {g.dietary !== 'none' && (
-                      <span className={`px-1 rounded font-semibold ${dietaryColors[g.dietary].badge}`}>
+                      <span className={`px-1.5 py-0.2 rounded-full font-semibold border ${dietaryColors[g.dietary].badge}`}>
                         {dietaryColors[g.dietary].label}
                       </span>
                     )}
@@ -293,7 +285,7 @@ export const SeatingPlanner: React.FC = () => {
                         assignGuestToTable(g.id, e.target.value);
                       }
                     }}
-                    className="px-2 py-1 bg-slate-900 border border-slate-700 rounded-lg text-xs text-slate-200 focus:outline-none"
+                    className="px-2.5 py-1 bg-neutral-900 border border-white/[0.1] rounded-full text-xs text-neutral-200 focus:outline-none"
                   >
                     <option value="">Seat At...</option>
                     {tables.map(t => (
@@ -305,13 +297,13 @@ export const SeatingPlanner: React.FC = () => {
 
                   <button
                     onClick={() => handleEditGuest(g)}
-                    className="p-1 text-slate-400 hover:text-white"
+                    className="p-1 text-neutral-400 hover:text-white"
                   >
                     <Edit2 className="w-3.5 h-3.5" />
                   </button>
                   <button
                     onClick={() => deleteGuest(g.id)}
-                    className="p-1 text-slate-400 hover:text-rose-400"
+                    className="p-1 text-neutral-400 hover:text-rose-400"
                   >
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
@@ -320,7 +312,7 @@ export const SeatingPlanner: React.FC = () => {
             ))}
           </div>
         ) : (
-          <div className="p-6 text-center text-xs text-emerald-400 bg-emerald-950/20 border border-emerald-500/20 rounded-2xl flex items-center justify-center gap-2">
+          <div className="p-6 text-center text-xs text-emerald-400 bg-emerald-950/20 border border-emerald-500/25 rounded-2xl flex items-center justify-center gap-2">
             <CheckCircle2 className="w-4 h-4" />
             <span>All confirmed guests have been successfully placed at tables!</span>
           </div>

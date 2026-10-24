@@ -3,21 +3,14 @@ import {
   Sparkles,
   Copy,
   Check,
-  Palette,
-  Share2,
-  Calendar,
-  MapPin,
-  Clock,
-  Layers,
-  Heart
+  Palette
 } from 'lucide-react';
 import { useEvent } from '../../context/EventContext';
-import { PRESET_PALETTES } from '../../data/presetTemplates';
 
 type CopyTone = 'regal' | 'chic' | 'witty' | 'intimate';
 
 export const InviteGenerator: React.FC = () => {
-  const { event, updateEventDetails } = useEvent();
+  const { event } = useEvent();
 
   const [tone, setTone] = useState<CopyTone>('regal');
   const [dressCode, setDressCode] = useState('Cocktail Attire / Black Tie Optional');
@@ -80,20 +73,20 @@ ${currentCopy.signoff}`;
   return (
     <div className="space-y-6 animate-in fade-in">
       {/* Title */}
-      <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl flex flex-col md:flex-row md:items-center justify-between gap-4">
+      <div className="p-6 sm:p-8 rounded-3xl aceternity-card shadow-2xl flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <div className="flex items-center gap-2 text-indigo-400 mb-1">
             <Sparkles className="w-5 h-5" />
-            <h2 className="text-lg font-bold text-white">Invitation Suite &amp; Aesthetic Palette Studio</h2>
+            <h2 className="text-base font-bold text-white tracking-tight">Invitation Suite &amp; Aesthetic Palette Studio</h2>
           </div>
-          <p className="text-xs text-slate-400">
+          <p className="text-xs text-neutral-400">
             Generate bespoke copywriting in 4 narrative tones and inspect harmonious color design tokens.
           </p>
         </div>
 
         <button
           onClick={handleCopyText}
-          className="flex items-center gap-1.5 px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 rounded-xl transition shadow-lg shadow-purple-900/30"
+          className="flex items-center gap-2 px-4 py-2 text-xs font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 rounded-full transition shadow-[0_0_15px_rgba(168,85,247,0.3)]"
         >
           {copiedText ? <Check className="w-4 h-4 text-emerald-300" /> : <Copy className="w-4 h-4" />}
           <span>{copiedText ? 'Copied Invitation!' : 'Copy Invitation Text'}</span>
@@ -104,8 +97,8 @@ ${currentCopy.signoff}`;
         {/* Left Side: Controls & Copywriting Options */}
         <div className="lg:col-span-5 space-y-6">
           {/* Tone Selector */}
-          <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-4">
-            <label className="block text-xs font-bold text-slate-300 uppercase tracking-wider">
+          <div className="p-6 sm:p-7 rounded-3xl aceternity-card shadow-2xl space-y-4">
+            <label className="block text-xs font-bold text-neutral-300 uppercase tracking-wider">
               Select Copywriting Tone
             </label>
             <div className="grid grid-cols-2 gap-2.5">
@@ -118,55 +111,55 @@ ${currentCopy.signoff}`;
                 <button
                   key={t.id}
                   onClick={() => setTone(t.id as CopyTone)}
-                  className={`p-3 rounded-2xl border text-left transition flex flex-col gap-1 ${
+                  className={`p-3.5 rounded-2xl border text-left transition flex flex-col gap-1 ${
                     tone === t.id
-                      ? 'bg-purple-950/40 border-purple-500 text-purple-200'
-                      : 'bg-slate-950 border-slate-800 text-slate-400 hover:border-slate-700'
+                      ? 'bg-purple-950/40 border-purple-500 text-purple-200 shadow-[0_0_12px_rgba(168,85,247,0.2)]'
+                      : 'bg-neutral-900 border-white/[0.08] text-neutral-400 hover:border-white/[0.18]'
                   }`}
                 >
-                  <span className="font-bold text-xs text-slate-200">{t.label}</span>
-                  <span className="text-[10px] text-slate-500">{t.desc}</span>
+                  <span className="font-bold text-xs text-neutral-200">{t.label}</span>
+                  <span className="text-[10px] text-neutral-500">{t.desc}</span>
                 </button>
               ))}
             </div>
 
             <div className="space-y-3 pt-2">
               <div>
-                <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-1">
                   Dress Code
                 </label>
                 <input
                   type="text"
                   value={dressCode}
                   onChange={(e) => setDressCode(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2 bg-neutral-900 border border-white/[0.08] rounded-full text-xs text-neutral-200 focus:outline-none focus:border-purple-500"
                 />
               </div>
 
               <div>
-                <label className="block text-[11px] font-semibold text-slate-400 uppercase tracking-wider mb-1">
+                <label className="block text-[11px] font-semibold text-neutral-400 uppercase tracking-wider mb-1">
                   RSVP Deadline
                 </label>
                 <input
                   type="text"
                   value={rsvpDate}
                   onChange={(e) => setRsvpDate(e.target.value)}
-                  className="w-full px-3.5 py-2 bg-slate-950 border border-slate-800 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-purple-500"
+                  className="w-full px-3.5 py-2 bg-neutral-900 border border-white/[0.08] rounded-full text-xs text-neutral-200 focus:outline-none focus:border-purple-500"
                 />
               </div>
             </div>
           </div>
 
           {/* Color Palette Palette Token Inspector */}
-          <div className="p-6 rounded-3xl bg-slate-900 border border-slate-800 shadow-xl space-y-4">
+          <div className="p-6 sm:p-7 rounded-3xl aceternity-card shadow-2xl space-y-4">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Palette className="w-4 h-4 text-purple-400" />
-                <h3 className="text-xs font-bold text-slate-300 uppercase tracking-wider">
+                <h3 className="text-xs font-bold text-neutral-300 uppercase tracking-wider">
                   Theme Palette: {event.colorPalette.name}
                 </h3>
               </div>
-              <span className="text-[10px] text-slate-500">Click swatch to copy hex</span>
+              <span className="text-[10px] text-neutral-500">Click to copy hex</span>
             </div>
 
             <div className="grid grid-cols-3 gap-2">
@@ -180,21 +173,21 @@ ${currentCopy.signoff}`;
                 <button
                   key={c.label}
                   onClick={() => handleCopyHex(c.hex)}
-                  className="p-2.5 rounded-xl bg-slate-950 border border-slate-800 hover:border-purple-500/50 text-left transition space-y-1.5"
+                  className="p-3 rounded-2xl bg-neutral-900 border border-white/[0.08] hover:border-white/[0.2] text-left transition space-y-1.5"
                 >
                   <div
-                    className="w-full h-8 rounded-lg border border-white/10 shadow-inner flex items-center justify-center text-[10px] font-bold text-white drop-shadow"
+                    className="w-full h-8 rounded-xl border border-white/10 shadow-inner flex items-center justify-center text-[10px] font-bold text-white drop-shadow"
                     style={{ backgroundColor: c.hex }}
                   >
                     {copiedHex === c.hex && 'Copied!'}
                   </div>
-                  <div className="text-[10px] font-semibold text-slate-300">{c.label}</div>
-                  <div className="font-mono text-[10px] text-slate-400">{c.hex}</div>
+                  <div className="text-[10px] font-semibold text-neutral-300">{c.label}</div>
+                  <div className="font-mono text-[10px] text-neutral-400">{c.hex}</div>
                 </button>
               ))}
             </div>
 
-            <p className="text-[11px] text-slate-400 leading-relaxed italic">
+            <p className="text-[11px] text-neutral-400 leading-relaxed italic">
               "{event.colorPalette.description}"
             </p>
           </div>
@@ -202,13 +195,13 @@ ${currentCopy.signoff}`;
 
         {/* Right Side: Live Invitation Card Mockup */}
         <div className="lg:col-span-7 flex flex-col items-center justify-center">
-          <div className="w-full max-w-lg p-1 bg-gradient-to-tr from-purple-500 via-indigo-500 to-amber-400 rounded-3xl shadow-2xl">
+          <div className="w-full max-w-lg p-[1px] bg-gradient-to-tr from-purple-500 via-indigo-500 to-amber-400 rounded-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)]">
             <div
-              className="w-full p-8 sm:p-12 rounded-[22px] text-center space-y-6 relative overflow-hidden"
+              className="w-full p-8 sm:p-12 rounded-[23px] text-center space-y-6 relative overflow-hidden backdrop-blur-2xl"
               style={{
-                backgroundColor: event.colorPalette.background || '#0D1A13',
+                backgroundColor: event.colorPalette.background || '#09090b',
                 color: event.colorPalette.text || '#F3F4F6',
-                border: `2px solid ${event.colorPalette.secondary}40`
+                border: `1px solid ${event.colorPalette.secondary}40`
               }}
             >
               {/* Inner Decorative Double Border */}
@@ -239,13 +232,13 @@ ${currentCopy.signoff}`;
               </p>
 
               {/* Main Title */}
-              <h1 className="text-2xl sm:text-3xl font-serif font-bold tracking-wide leading-tight">
+              <h1 className="text-2xl sm:text-4xl font-serif font-bold tracking-wide leading-tight">
                 {event.title}
               </h1>
 
               {/* Date & Details Badge */}
               <div
-                className="py-3 px-6 rounded-xl border inline-block mx-auto space-y-1 text-xs"
+                className="py-3 px-6 rounded-2xl border inline-block mx-auto space-y-1 text-xs backdrop-blur-md"
                 style={{
                   borderColor: `${event.colorPalette.secondary}30`,
                   backgroundColor: `${event.colorPalette.primary}40`
@@ -259,7 +252,7 @@ ${currentCopy.signoff}`;
                     day: 'numeric'
                   })}
                 </div>
-                <div className="text-[11px] opacity-80">
+                <div className="text-[11px] opacity-80 font-mono">
                   {event.startTime} — {event.endTime}
                 </div>
               </div>
@@ -289,7 +282,7 @@ ${currentCopy.signoff}`;
             </div>
           </div>
 
-          <div className="mt-4 text-center text-xs text-slate-500">
+          <div className="mt-4 text-center text-xs text-neutral-500">
             Rendered live using your selected theme palette tokens and copywriting tone
           </div>
         </div>

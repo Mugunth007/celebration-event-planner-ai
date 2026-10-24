@@ -77,46 +77,46 @@ export const Navbar: React.FC = () => {
 
   return (
     <>
-      <header className="sticky top-0 z-40 w-full border-b border-slate-800/80 bg-slate-950/80 backdrop-blur-md">
+      <header className="sticky top-0 z-40 w-full border-b border-white/[0.08] bg-black/60 backdrop-blur-2xl">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
           {/* Logo & Brand */}
           <div className="flex items-center gap-3">
-            <div className="p-2 rounded-xl bg-gradient-to-tr from-purple-600 via-indigo-600 to-pink-500 text-white shadow-lg shadow-purple-900/30">
+            <div className="relative p-2 rounded-xl bg-neutral-900 border border-white/[0.1] text-purple-400 shadow-[0_0_20px_rgba(168,85,247,0.25)]">
               <Sparkles className="w-5 h-5 animate-pulse" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <span className="font-extrabold text-lg tracking-tight bg-gradient-to-r from-white via-slate-100 to-purple-300 bg-clip-text text-transparent">
+                <span className="font-extrabold text-lg tracking-tight bg-clip-text text-transparent bg-gradient-to-b from-white via-neutral-100 to-neutral-400">
                   CelebAura AI
                 </span>
-                <span className="hidden sm:inline-block px-2 py-0.5 text-[10px] font-semibold tracking-wider uppercase rounded-full bg-purple-500/10 border border-purple-500/30 text-purple-300">
+                <span className="hidden sm:inline-block px-2.5 py-0.5 text-[10px] font-medium tracking-wider uppercase rounded-full bg-white/[0.05] border border-white/[0.1] text-neutral-300">
                   Challenge 5
                 </span>
               </div>
-              <p className="text-[11px] text-slate-400 hidden sm:block truncate max-w-xs">
-                Autonomous Celebration &amp; Event Intelligence
+              <p className="text-[11px] text-neutral-400 hidden sm:block truncate max-w-xs font-normal">
+                Autonomous Celebration &amp; Event Orchestrator
               </p>
             </div>
           </div>
 
           {/* Preset Selector, Actions & Google Sign-In */}
-          <div className="flex items-center gap-2 sm:gap-3">
+          <div className="flex items-center gap-2 sm:gap-2.5">
             {/* Template Selector Dropdown */}
             <div className="relative">
               <button
                 onClick={() => setIsTemplateMenuOpen(!isTemplateMenuOpen)}
-                className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-900 border border-slate-800 rounded-xl hover:bg-slate-800/80 transition"
+                className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium text-neutral-300 bg-neutral-900/80 border border-white/[0.08] rounded-full hover:border-white/[0.18] hover:text-white transition shadow-sm"
                 title="Switch Preset Blueprint"
               >
                 <Calendar className="w-3.5 h-3.5 text-purple-400" />
-                <span className="hidden md:inline truncate max-w-[140px]">{event.title}</span>
+                <span className="hidden md:inline truncate max-w-[130px]">{event.title}</span>
                 <span className="md:hidden">Presets</span>
-                <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                <ChevronDown className="w-3.5 h-3.5 text-neutral-400" />
               </button>
 
               {isTemplateMenuOpen && (
-                <div className="absolute right-0 mt-2 w-72 p-2 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl z-50 animate-in fade-in">
-                  <div className="px-2 py-1.5 text-[11px] font-semibold text-slate-400 uppercase tracking-wider">
+                <div className="absolute right-0 mt-2 w-72 p-2 bg-neutral-950/95 border border-white/[0.1] rounded-2xl shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in">
+                  <div className="px-2 py-1.5 text-[11px] font-semibold text-neutral-400 uppercase tracking-wider">
                     Instant Event Blueprints
                   </div>
                   {PRESET_TEMPLATES.map((tmpl) => (
@@ -129,14 +129,14 @@ export const Navbar: React.FC = () => {
                       className={`w-full text-left p-2.5 rounded-xl text-xs transition mb-1 flex flex-col gap-0.5 ${
                         event.id === tmpl.event.id
                           ? 'bg-purple-950/40 text-purple-200 border border-purple-500/40'
-                          : 'text-slate-300 hover:bg-slate-800'
+                          : 'text-neutral-300 hover:bg-neutral-900'
                       }`}
                     >
                       <span className="font-semibold">{tmpl.name}</span>
-                      <span className="text-[10px] text-slate-400 truncate">{tmpl.description}</span>
+                      <span className="text-[10px] text-neutral-400 truncate">{tmpl.description}</span>
                     </button>
                   ))}
-                  <div className="border-t border-slate-800 mt-1 pt-1">
+                  <div className="border-t border-neutral-800 mt-1 pt-1">
                     <button
                       onClick={() => {
                         resetToBlank();
@@ -154,17 +154,17 @@ export const Navbar: React.FC = () => {
             {/* Quick Edit Event Settings */}
             <button
               onClick={() => setIsSetupOpen(true)}
-              className="p-2 text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 rounded-xl transition"
+              className="p-2 text-neutral-300 hover:text-white bg-neutral-900/80 border border-white/[0.08] hover:border-white/[0.18] rounded-full transition"
               title="Edit Event Blueprint Settings"
               aria-label="Edit Event Blueprint Settings"
             >
-              <Settings className="w-4 h-4" />
+              <Settings className="w-3.5 h-3.5" />
             </button>
 
             {/* Print Run of Show */}
             <button
               onClick={handlePrint}
-              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-slate-200 bg-slate-900 border border-slate-800 hover:bg-slate-800 rounded-xl transition"
+              className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium text-neutral-300 bg-neutral-900/80 border border-white/[0.08] hover:border-white/[0.18] hover:text-white rounded-full transition"
               title="Print Clean Run of Show Sheet"
             >
               <Printer className="w-3.5 h-3.5 text-sky-400" />
@@ -174,11 +174,11 @@ export const Navbar: React.FC = () => {
             {/* Export JSON */}
             <button
               onClick={handleExport}
-              className="p-2 text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 rounded-xl transition"
+              className="p-2 text-neutral-300 hover:text-white bg-neutral-900/80 border border-white/[0.08] hover:border-white/[0.18] rounded-full transition"
               title="Export Full Dossier Backup (JSON)"
               aria-label="Export Full Dossier Backup"
             >
-              <Download className="w-4 h-4 text-emerald-400" />
+              <Download className="w-3.5 h-3.5 text-emerald-400" />
             </button>
 
             {/* Import JSON */}
@@ -191,20 +191,23 @@ export const Navbar: React.FC = () => {
             />
             <button
               onClick={() => fileInputRef.current?.click()}
-              className="p-2 text-slate-300 hover:text-white bg-slate-900 border border-slate-800 hover:bg-slate-800 rounded-xl transition"
+              className="p-2 text-neutral-300 hover:text-white bg-neutral-900/80 border border-white/[0.08] hover:border-white/[0.18] rounded-full transition"
               title="Import Event Dossier (JSON)"
               aria-label="Import Event Dossier"
             >
-              <Upload className="w-4 h-4 text-amber-400" />
+              <Upload className="w-3.5 h-3.5 text-amber-400" />
             </button>
 
-            {/* Gen AI Configuration */}
+            {/* Gen AI Configuration (Aceternity Shimmer Button) */}
             <button
               onClick={() => setIsApiKeyOpen(true)}
-              className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold text-white bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 rounded-xl shadow-md shadow-purple-900/30 transition transform active:scale-95"
+              className="relative inline-flex overflow-hidden rounded-full p-[1px] focus:outline-none"
             >
-              <Sparkles className="w-3.5 h-3.5" />
-              <span className="hidden md:inline">Gemini AI</span>
+              <span className="absolute inset-[-1000%] animate-[spin_3s_linear_infinite] bg-[conic-gradient(from_90deg_at_50%_50%,#c084fc_0%,#3b82f6_50%,#c084fc_100%)] opacity-70" />
+              <span className="inline-flex h-full w-full cursor-pointer items-center justify-center rounded-full bg-neutral-950 px-3.5 py-1.5 text-xs font-semibold text-white backdrop-blur-3xl gap-1.5 hover:bg-neutral-900 transition">
+                <Sparkles className="w-3.5 h-3.5 text-purple-300" />
+                <span className="hidden md:inline">Gemini AI</span>
+              </span>
             </button>
 
             {/* Google Sign-In / Account Dropdown */}
@@ -212,30 +215,30 @@ export const Navbar: React.FC = () => {
               <div className="relative">
                 <button
                   onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
-                  className="flex items-center gap-2 p-1 pl-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl transition"
+                  className="flex items-center gap-2 p-1 pl-2 bg-neutral-900/90 hover:bg-neutral-800 border border-white/[0.1] rounded-full transition"
                 >
                   <img
                     src={user.picture}
                     alt={user.name}
-                    className="w-6 h-6 rounded-lg object-cover border border-purple-500/40"
+                    className="w-6 h-6 rounded-full object-cover border border-purple-500/40"
                   />
-                  <span className="hidden sm:inline text-xs font-semibold text-slate-200 truncate max-w-[100px]">
+                  <span className="hidden sm:inline text-xs font-medium text-neutral-200 truncate max-w-[90px]">
                     {user.givenName || user.name}
                   </span>
-                  <ChevronDown className="w-3 h-3 text-slate-400" />
+                  <ChevronDown className="w-3 h-3 text-neutral-400 mr-1" />
                 </button>
 
                 {isUserMenuOpen && (
-                  <div className="absolute right-0 mt-2 w-64 p-3 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl z-50 animate-in fade-in space-y-2">
-                    <div className="flex items-center gap-2.5 pb-2 border-b border-slate-800">
+                  <div className="absolute right-0 mt-2 w-64 p-3 bg-neutral-950/95 border border-white/[0.1] rounded-2xl shadow-2xl backdrop-blur-2xl z-50 animate-in fade-in space-y-2">
+                    <div className="flex items-center gap-2.5 pb-2 border-b border-neutral-800">
                       <img
                         src={user.picture}
                         alt={user.name}
-                        className="w-9 h-9 rounded-xl object-cover border border-purple-500/40"
+                        className="w-9 h-9 rounded-full object-cover border border-purple-500/40"
                       />
                       <div className="truncate">
                         <div className="text-xs font-bold text-white truncate">{user.name}</div>
-                        <div className="text-[10px] text-slate-400 truncate">{user.email}</div>
+                        <div className="text-[10px] text-neutral-400 truncate">{user.email}</div>
                       </div>
                     </div>
 
@@ -260,7 +263,7 @@ export const Navbar: React.FC = () => {
             ) : (
               <button
                 onClick={openAuthModal}
-                className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-800 text-xs font-semibold rounded-xl shadow-md transition transform active:scale-95"
+                className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-neutral-100 text-neutral-900 text-xs font-medium rounded-full shadow-[0_0_15px_rgba(255,255,255,0.15)] transition transform active:scale-95"
               >
                 <svg viewBox="0 0 48 48" className="w-4 h-4 shrink-0">
                   <path

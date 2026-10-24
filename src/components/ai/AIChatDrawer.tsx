@@ -9,8 +9,7 @@ import {
   Volume2,
   Trash2,
   ExternalLink,
-  Cpu,
-  CornerDownLeft
+  Cpu
 } from 'lucide-react';
 import { useEvent } from '../../context/EventContext';
 import { sendChatMessage, getStoredApiKey, getStoredModel } from '../../services/geminiService';
@@ -54,7 +53,6 @@ export const AIChatDrawer: React.FC = () => {
     setIsLoading(true);
 
     try {
-      // Build conversation history for multi-turn context
       const history = chatMessages.slice(-6).map((m) => ({
         role: m.sender === 'user' ? ('user' as const) : ('model' as const),
         parts: [{ text: m.content }]
@@ -78,7 +76,6 @@ export const AIChatDrawer: React.FC = () => {
     }
   };
 
-  // Web Speech API: Voice dictation
   const toggleListening = () => {
     if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
       alert('Speech recognition is not supported in this browser. Please try Chrome or Edge.');
@@ -114,7 +111,6 @@ export const AIChatDrawer: React.FC = () => {
     recognition.start();
   };
 
-  // Text-To-Speech for assistant responses
   const speakText = (text: string) => {
     if (!('speechSynthesis' in window)) return;
 
@@ -150,27 +146,27 @@ export const AIChatDrawer: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-col h-[calc(100vh-12rem)] min-h-[600px] rounded-3xl bg-slate-900 border border-slate-800 shadow-2xl overflow-hidden animate-in fade-in">
+    <div className="flex flex-col h-[calc(100vh-12rem)] min-h-[620px] rounded-3xl aceternity-card shadow-2xl overflow-hidden animate-in fade-in">
       {/* Top Header */}
-      <div className="px-6 py-4 border-b border-slate-800 bg-slate-950/70 backdrop-blur-md flex items-center justify-between">
+      <div className="px-6 py-4 border-b border-white/[0.08] bg-neutral-950/70 backdrop-blur-xl flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <div className="p-2.5 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400">
+          <div className="p-2.5 rounded-2xl bg-purple-500/10 border border-purple-500/25 text-purple-400 shadow-[0_0_15px_rgba(168,85,247,0.15)]">
             <Bot className="w-5 h-5" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h2 className="text-base font-bold text-white">Aura AI Co-Pilot</h2>
-              <span className="px-2 py-0.5 text-[10px] font-semibold rounded-full bg-emerald-500/10 border border-emerald-500/30 text-emerald-400">
+              <h2 className="text-sm font-bold text-white tracking-tight">Aura AI Co-Pilot</h2>
+              <span className="px-2 py-0.5 text-[9px] font-semibold rounded-full bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">
                 Active
               </span>
             </div>
-            <div className="flex items-center gap-2 text-xs text-slate-400">
-              <span className="flex items-center gap-1">
+            <div className="flex items-center gap-2 text-xs text-neutral-400">
+              <span className="flex items-center gap-1 font-mono text-[11px]">
                 <Cpu className="w-3 h-3 text-indigo-400" />
                 {hasApiKey ? currentModel : 'Autonomous Heuristic Engine'}
               </span>
               <span>•</span>
-              <span className="text-slate-300 font-medium truncate max-w-[160px] sm:max-w-xs">
+              <span className="text-neutral-300 font-medium truncate max-w-[160px] sm:max-w-xs">
                 Context: {event.title}
               </span>
             </div>
@@ -180,7 +176,7 @@ export const AIChatDrawer: React.FC = () => {
         <div className="flex items-center gap-2">
           <button
             onClick={clearChatHistory}
-            className="p-2 text-slate-400 hover:text-rose-400 rounded-xl hover:bg-slate-800/80 transition"
+            className="p-2 text-neutral-400 hover:text-rose-400 rounded-full hover:bg-neutral-800 transition"
             title="Clear Chat History"
           >
             <Trash2 className="w-4 h-4" />
@@ -198,34 +194,34 @@ export const AIChatDrawer: React.FC = () => {
               className={`flex gap-3 text-sm ${isUser ? 'justify-end' : 'justify-start'}`}
             >
               {!isUser && (
-                <div className="w-8 h-8 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-300 shrink-0 mt-1">
+                <div className="w-8 h-8 rounded-full bg-neutral-900 border border-white/[0.1] flex items-center justify-center text-purple-300 shrink-0 mt-1 shadow-sm">
                   <Sparkles className="w-4 h-4" />
                 </div>
               )}
 
               <div
-                className={`max-w-[85%] sm:max-w-[75%] rounded-2xl px-4 py-3.5 space-y-2 ${
+                className={`max-w-[85%] sm:max-w-[75%] rounded-2xl px-5 py-4 space-y-2 ${
                   isUser
-                    ? 'bg-purple-600 text-white rounded-tr-none'
-                    : 'bg-slate-950/80 border border-slate-800 text-slate-200 rounded-tl-none shadow-md'
+                    ? 'bg-gradient-to-r from-purple-600 to-indigo-600 text-white rounded-tr-none shadow-lg'
+                    : 'bg-neutral-900/90 border border-white/[0.08] text-neutral-200 rounded-tl-none shadow-md backdrop-blur-md'
                 }`}
               >
-                <div className="flex items-center justify-between gap-4 text-[10px] text-slate-400 mb-1">
-                  <span className="font-semibold text-slate-300">
+                <div className="flex items-center justify-between gap-4 text-[10px] text-neutral-400 mb-1">
+                  <span className="font-semibold text-neutral-300">
                     {isUser ? 'You' : 'Aura AI Director'}
                   </span>
-                  <span>{msg.timestamp}</span>
+                  <span className="font-mono">{msg.timestamp}</span>
                 </div>
 
-                <div className="prose prose-invert prose-xs leading-relaxed space-y-2 whitespace-pre-line">
+                <div className="prose prose-invert prose-xs leading-relaxed space-y-2 whitespace-pre-line text-neutral-200 font-normal">
                   {msg.content}
                 </div>
 
                 {!isUser && (
-                  <div className="pt-2 flex flex-wrap items-center gap-2 border-t border-slate-800/60 mt-3">
+                  <div className="pt-2 flex flex-wrap items-center gap-2 border-t border-white/[0.06] mt-3">
                     <button
                       onClick={() => speakText(msg.content)}
-                      className="inline-flex items-center gap-1 text-[11px] text-slate-400 hover:text-purple-300 transition"
+                      className="inline-flex items-center gap-1 text-[11px] text-neutral-400 hover:text-purple-300 transition"
                       title="Read aloud"
                     >
                       <Volume2 className="w-3.5 h-3.5" />
@@ -236,7 +232,7 @@ export const AIChatDrawer: React.FC = () => {
                       <button
                         key={i}
                         onClick={() => handleActionClick(act)}
-                        className="inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-semibold text-purple-300 bg-purple-950/40 border border-purple-500/30 hover:bg-purple-900/50 rounded-lg transition"
+                        className="inline-flex items-center gap-1 px-3 py-1 text-[11px] font-semibold text-purple-300 bg-purple-950/40 border border-purple-500/30 hover:bg-purple-900/50 rounded-full transition"
                       >
                         <span>{act.label}</span>
                         <ExternalLink className="w-3 h-3" />
@@ -247,7 +243,7 @@ export const AIChatDrawer: React.FC = () => {
               </div>
 
               {isUser && (
-                <div className="w-8 h-8 rounded-xl bg-slate-800 flex items-center justify-center text-slate-300 shrink-0 mt-1">
+                <div className="w-8 h-8 rounded-full bg-neutral-800 flex items-center justify-center text-neutral-300 shrink-0 mt-1 border border-white/[0.08]">
                   <User className="w-4 h-4" />
                 </div>
               )}
@@ -257,10 +253,10 @@ export const AIChatDrawer: React.FC = () => {
 
         {isLoading && (
           <div className="flex gap-3 text-sm justify-start">
-            <div className="w-8 h-8 rounded-xl bg-purple-600/20 border border-purple-500/30 flex items-center justify-center text-purple-300 shrink-0">
+            <div className="w-8 h-8 rounded-full bg-neutral-900 border border-white/[0.1] flex items-center justify-center text-purple-300 shrink-0">
               <Sparkles className="w-4 h-4 animate-spin" />
             </div>
-            <div className="bg-slate-950/80 border border-slate-800 rounded-2xl rounded-tl-none px-4 py-3 text-slate-400 text-xs flex items-center gap-2">
+            <div className="bg-neutral-900/90 border border-white/[0.08] rounded-2xl rounded-tl-none px-4 py-3 text-neutral-400 text-xs flex items-center gap-2">
               <div className="w-2 h-2 rounded-full bg-purple-400 animate-ping" />
               <span>Aura is calculating event logistics &amp; synthesizing recommendations...</span>
             </div>
@@ -270,14 +266,14 @@ export const AIChatDrawer: React.FC = () => {
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Suggested Quick Chips */}
-      <div className="px-4 py-2 border-t border-slate-800/60 bg-slate-950/40 overflow-x-auto no-scrollbar flex items-center gap-2">
-        <span className="text-[10px] uppercase font-bold text-slate-500 shrink-0">Ask Aura:</span>
+      {/* Suggested Quick Chips (Aceternity Pills) */}
+      <div className="px-4 py-2.5 border-t border-white/[0.06] bg-neutral-950/60 overflow-x-auto no-scrollbar flex items-center gap-2">
+        <span className="text-[10px] uppercase font-bold text-neutral-500 shrink-0 tracking-wider">Ask Aura:</span>
         {samplePrompts.map((p, idx) => (
           <button
             key={idx}
             onClick={() => handleSend(p)}
-            className="px-2.5 py-1 text-xs text-slate-300 bg-slate-900 hover:bg-slate-800 border border-slate-800 hover:border-purple-500/30 rounded-lg whitespace-nowrap transition"
+            className="px-3 py-1 text-xs text-neutral-300 bg-neutral-900/80 hover:bg-neutral-800 border border-white/[0.08] hover:border-white/[0.18] rounded-full whitespace-nowrap transition"
           >
             {p}
           </button>
@@ -285,7 +281,7 @@ export const AIChatDrawer: React.FC = () => {
       </div>
 
       {/* Input Form */}
-      <div className="p-4 border-t border-slate-800 bg-slate-950/90">
+      <div className="p-4 border-t border-white/[0.08] bg-neutral-950/90">
         <form
           onSubmit={(e) => {
             e.preventDefault();
@@ -296,28 +292,28 @@ export const AIChatDrawer: React.FC = () => {
           <button
             type="button"
             onClick={toggleListening}
-            className={`p-2.5 rounded-xl transition ${
+            className={`p-2.5 rounded-full transition ${
               isListening
                 ? 'bg-rose-500 text-white animate-pulse'
-                : 'text-slate-400 hover:text-white hover:bg-slate-800'
+                : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
             }`}
             title={isListening ? 'Listening...' : 'Voice Dictation'}
           >
-            {isListening ? <MicOff className="w-5 h-5" /> : <Mic className="w-5 h-5" />}
+            {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
           </button>
 
           <input
             type="text"
             value={input}
             onChange={(e) => setInput(e.target.value)}
-            placeholder="Ask Aura anything (e.g., 'Suggest a contingency plan for rain', 'Review budget balance')..."
-            className="flex-1 px-4 py-3 bg-slate-900 border border-slate-800 rounded-2xl text-sm text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+            placeholder="Ask Aura anything (e.g. 'Suggest a contingency plan for rain', 'Review budget balance')..."
+            className="flex-1 px-4 py-3 bg-neutral-900/90 border border-white/[0.08] rounded-full text-sm text-neutral-100 placeholder:text-neutral-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
           />
 
           <button
             type="submit"
             disabled={!input.trim() || isLoading}
-            className="p-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-50 text-white rounded-2xl transition shadow-lg shadow-purple-900/30 disabled:pointer-events-none"
+            className="p-3 bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-500 hover:to-indigo-500 disabled:opacity-40 text-white rounded-full transition shadow-lg shadow-purple-900/30 disabled:pointer-events-none"
             title="Send Message"
           >
             <Send className="w-4 h-4" />

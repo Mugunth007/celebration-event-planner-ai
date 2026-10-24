@@ -22,26 +22,26 @@ export const QuickStats: React.FC = () => {
       {/* 1. Budget Card */}
       <div
         onClick={() => setActiveTab('budget')}
-        className="group cursor-pointer p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-purple-500/50 hover:bg-slate-800/60 transition shadow-lg flex flex-col justify-between"
+        className="group cursor-pointer p-6 rounded-3xl aceternity-card hover:scale-[1.01] transition-all duration-300 shadow-xl flex flex-col justify-between"
       >
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Budget Health</span>
-          <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Budget Health</span>
+          <div className="p-2 rounded-xl bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
             <DollarSign className="w-4 h-4" />
           </div>
         </div>
 
         <div className="my-3">
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-white">
+            <span className="text-3xl font-black text-white tracking-tight">
               ${budgetReport.totalActual.toLocaleString()}
             </span>
-            <span className="text-xs text-slate-400">
-              of ${event.totalBudget.toLocaleString()}
+            <span className="text-xs text-neutral-400 font-normal">
+              / ${event.totalBudget.toLocaleString()}
             </span>
           </div>
 
-          <div className="w-full bg-slate-800 rounded-full h-2 mt-2 overflow-hidden">
+          <div className="w-full bg-neutral-800/80 rounded-full h-1.5 mt-2.5 overflow-hidden">
             <div
               className={`h-full rounded-full transition-all duration-500 ${
                 budgetReport.isOverBudget
@@ -57,41 +57,41 @@ export const QuickStats: React.FC = () => {
 
         <div className="flex items-center justify-between text-xs pt-1">
           {budgetReport.isOverBudget ? (
-            <span className="text-rose-400 flex items-center gap-1 font-semibold">
+            <span className="text-rose-400 flex items-center gap-1 font-semibold text-[11px]">
               <AlertTriangle className="w-3.5 h-3.5" /> Over by ${(budgetReport.totalActual - event.totalBudget).toLocaleString()}
             </span>
           ) : (
-            <span className="text-emerald-400 font-medium">
-              ${budgetReport.remainingBudget.toLocaleString()} remaining
+            <span className="text-emerald-400 font-medium text-[11px]">
+              ${budgetReport.remainingBudget.toLocaleString()} buffer available
             </span>
           )}
-          <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-purple-400 group-hover:translate-x-1 transition" />
+          <ArrowRight className="w-3.5 h-3.5 text-neutral-500 group-hover:text-purple-400 group-hover:translate-x-1 transition" />
         </div>
       </div>
 
       {/* 2. Guests & RSVPs Card */}
       <div
         onClick={() => setActiveTab('seating')}
-        className="group cursor-pointer p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-purple-500/50 hover:bg-slate-800/60 transition shadow-lg flex flex-col justify-between"
+        className="group cursor-pointer p-6 rounded-3xl aceternity-card hover:scale-[1.01] transition-all duration-300 shadow-xl flex flex-col justify-between"
       >
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Guest RSVPs</span>
-          <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Guest RSVPs</span>
+          <div className="p-2 rounded-xl bg-amber-500/10 text-amber-400 border border-amber-500/20">
             <Users className="w-4 h-4" />
           </div>
         </div>
 
         <div className="my-3">
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-white">
+            <span className="text-3xl font-black text-white tracking-tight">
               {confirmedGuests}
             </span>
-            <span className="text-xs text-slate-400">
-              / {event.targetGuestCount} target capacity
+            <span className="text-xs text-neutral-400 font-normal">
+              / {event.targetGuestCount} capacity
             </span>
           </div>
 
-          <div className="w-full bg-slate-800 rounded-full h-2 mt-2 overflow-hidden">
+          <div className="w-full bg-neutral-800/80 rounded-full h-1.5 mt-2.5 overflow-hidden">
             <div
               className="h-full rounded-full bg-amber-400 transition-all duration-500"
               style={{ width: `${guestPercent}%` }}
@@ -100,75 +100,75 @@ export const QuickStats: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-between text-xs pt-1">
-          <span className="text-slate-400">
+          <span className="text-neutral-400 text-[11px]">
             {dietarySummary.allergiesList.length > 0 ? (
               <span className="text-amber-400 font-medium">{dietarySummary.allergiesList.length} dietary flags</span>
             ) : (
               `${guests.length} on roster`
             )}
           </span>
-          <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-purple-400 group-hover:translate-x-1 transition" />
+          <ArrowRight className="w-3.5 h-3.5 text-neutral-500 group-hover:text-purple-400 group-hover:translate-x-1 transition" />
         </div>
       </div>
 
       {/* 3. Run-of-Show Milestones Card */}
       <div
         onClick={() => setActiveTab('timeline')}
-        className="group cursor-pointer p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-purple-500/50 hover:bg-slate-800/60 transition shadow-lg flex flex-col justify-between"
+        className="group cursor-pointer p-6 rounded-3xl aceternity-card hover:scale-[1.01] transition-all duration-300 shadow-xl flex flex-col justify-between"
       >
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Run of Show</span>
-          <div className="p-2 rounded-xl bg-sky-500/10 text-sky-400">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Run of Show</span>
+          <div className="p-2 rounded-xl bg-sky-500/10 text-sky-400 border border-sky-500/20">
             <Clock className="w-4 h-4" />
           </div>
         </div>
 
         <div className="my-3">
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-white">
+            <span className="text-3xl font-black text-white tracking-tight">
               {timelineItems.length}
             </span>
-            <span className="text-xs text-slate-400">
-              production cues logged
+            <span className="text-xs text-neutral-400 font-normal">
+              production cues
             </span>
           </div>
 
-          <p className="text-xs text-slate-400 mt-2 truncate">
-            {timelineItems[0] ? `First: ${timelineItems[0].time} • ${timelineItems[0].title}` : 'No cues defined yet'}
+          <p className="text-[11px] text-neutral-400 mt-2 truncate font-mono">
+            {timelineItems[0] ? `First: ${timelineItems[0].time} • ${timelineItems[0].title}` : 'No cues defined'}
           </p>
         </div>
 
         <div className="flex items-center justify-between text-xs pt-1">
-          <span className="text-sky-400 font-medium">
-            {event.startTime} - {event.endTime} window
+          <span className="text-sky-400 font-medium text-[11px]">
+            {event.startTime} – {event.endTime} window
           </span>
-          <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-purple-400 group-hover:translate-x-1 transition" />
+          <ArrowRight className="w-3.5 h-3.5 text-neutral-500 group-hover:text-purple-400 group-hover:translate-x-1 transition" />
         </div>
       </div>
 
       {/* 4. Checklist Progress Card */}
       <div
         onClick={() => setActiveTab('vendors')}
-        className="group cursor-pointer p-5 rounded-2xl bg-slate-900 border border-slate-800 hover:border-purple-500/50 hover:bg-slate-800/60 transition shadow-lg flex flex-col justify-between"
+        className="group cursor-pointer p-6 rounded-3xl aceternity-card hover:scale-[1.01] transition-all duration-300 shadow-xl flex flex-col justify-between"
       >
         <div className="flex items-center justify-between">
-          <span className="text-xs font-bold uppercase tracking-wider text-slate-400">Milestone Checklist</span>
-          <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400">
+          <span className="text-[11px] font-bold uppercase tracking-wider text-neutral-400">Milestone Tasks</span>
+          <div className="p-2 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20">
             <CheckCircle2 className="w-4 h-4" />
           </div>
         </div>
 
         <div className="my-3">
           <div className="flex items-baseline gap-2">
-            <span className="text-2xl font-black text-white">
+            <span className="text-3xl font-black text-white tracking-tight">
               {checklistPercent}%
             </span>
-            <span className="text-xs text-slate-400">
+            <span className="text-xs text-neutral-400 font-normal">
               ({completedChecklist}/{checklistItems.length} tasks)
             </span>
           </div>
 
-          <div className="w-full bg-slate-800 rounded-full h-2 mt-2 overflow-hidden">
+          <div className="w-full bg-neutral-800/80 rounded-full h-1.5 mt-2.5 overflow-hidden">
             <div
               className="h-full rounded-full bg-purple-500 transition-all duration-500"
               style={{ width: `${checklistPercent}%` }}
@@ -177,10 +177,10 @@ export const QuickStats: React.FC = () => {
         </div>
 
         <div className="flex items-center justify-between text-xs pt-1">
-          <span className="text-purple-300 font-medium">
-            {checklistItems.length - completedChecklist} tasks remaining
+          <span className="text-purple-300 font-medium text-[11px]">
+            {checklistItems.length - completedChecklist} remaining
           </span>
-          <ArrowRight className="w-3.5 h-3.5 text-slate-500 group-hover:text-purple-400 group-hover:translate-x-1 transition" />
+          <ArrowRight className="w-3.5 h-3.5 text-neutral-500 group-hover:text-purple-400 group-hover:translate-x-1 transition" />
         </div>
       </div>
     </div>
