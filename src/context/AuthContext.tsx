@@ -22,7 +22,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const [user, setUser] = useState<GoogleUser | null>(() => {
     try {
       const saved = localStorage.getItem(AUTH_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : null;
+      if (saved) {
+        const parsed = JSON.parse(saved);
+        // Clean out any legacy developer account if previously stored
+        if (parsed?.email?.includes('mugunthking491')) {
+          localStorage.removeItem(AUTH_STORAGE_KEY);
+          return null;
+        }
+        return parsed;
+      }
+      return null;
     } catch {
       return null;
     }
@@ -59,16 +68,21 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const closeAuthModal = () => setIsAuthModalOpen(false);
 
   const signInWithGoogle = (customUser?: Partial<GoogleUser>) => {
+    const name = customUser?.name?.trim() || 'Event Director';
+    const email = customUser?.email?.trim() || 'event.director@gmail.com';
+    const givenName = customUser?.givenName || name.split(' ')[0] || 'Director';
+
     const newUser: GoogleUser = {
       id: customUser?.id || 'usr-' + Date.now(),
-      name: customUser?.name || 'Mugunth',
-      email: customUser?.email || 'mugunthking491@gmail.com',
+      name,
+      email,
       picture:
         customUser?.picture ||
-        'https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=256&q=80',
-      givenName: customUser?.givenName || 'Mugunth',
+        `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=7e22ce,3b82f6`,
+      givenName,
       signedInAt: new Date().toISOString()
     };
+
     setUser(newUser);
     closeAuthModal();
   };

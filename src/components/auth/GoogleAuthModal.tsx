@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, ShieldCheck, Check, Sparkles, User, Mail, Settings, Key } from 'lucide-react';
+import { X, ShieldCheck, User, Mail, Settings, Sparkles } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { fireCelebrationConfetti } from '../common/ConfettiTrigger';
 
@@ -12,19 +12,41 @@ export const GoogleAuthModal: React.FC = () => {
     setGoogleClientId
   } = useAuth();
 
-  const [customName, setCustomName] = useState('Mugunth');
-  const [customEmail, setCustomEmail] = useState('mugunthking491@gmail.com');
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
   const [clientIdInput, setClientIdInput] = useState(googleClientId);
   const [showAdvanced, setShowAdvanced] = useState(false);
+  const [errorMsg, setErrorMsg] = useState('');
 
   if (!isAuthModalOpen) return null;
 
-  const handleSignIn = (name: string, email: string) => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name.trim()) {
+      setErrorMsg('Please enter your full name');
+      return;
+    }
+    if (!email.trim() || !email.includes('@')) {
+      setErrorMsg('Please enter a valid Google email address');
+      return;
+    }
+
+    setErrorMsg('');
     signInWithGoogle({
-      name,
-      email,
-      givenName: name.split(' ')[0],
-      picture: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name)}&backgroundColor=7e22ce,3b82f6`
+      name: name.trim(),
+      email: email.trim(),
+      givenName: name.trim().split(' ')[0],
+      picture: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(name.trim())}&backgroundColor=7e22ce,3b82f6`
+    });
+    fireCelebrationConfetti();
+  };
+
+  const handleQuickDemoSignIn = (demoName: string, demoEmail: string) => {
+    signInWithGoogle({
+      name: demoName,
+      email: demoEmail,
+      givenName: demoName.split(' ')[0],
+      picture: `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(demoName)}&backgroundColor=7e22ce,3b82f6`
     });
     fireCelebrationConfetti();
   };
@@ -37,10 +59,10 @@ export const GoogleAuthModal: React.FC = () => {
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md animate-in fade-in">
-      <div className="relative w-full max-w-md p-6 sm:p-8 bg-slate-900 border border-slate-800 rounded-3xl shadow-2xl text-slate-100">
+      <div className="relative w-full max-w-md p-6 sm:p-8 aceternity-card rounded-3xl shadow-2xl text-neutral-100">
         <button
           onClick={closeAuthModal}
-          className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-white rounded-lg hover:bg-slate-800 transition"
+          className="absolute top-4 right-4 p-1.5 text-neutral-400 hover:text-white rounded-full hover:bg-neutral-800 transition"
           aria-label="Close authentication modal"
         >
           <X className="w-5 h-5" />
@@ -70,19 +92,63 @@ export const GoogleAuthModal: React.FC = () => {
           </div>
           <div>
             <h3 className="text-xl font-bold text-white tracking-tight">Sign in with Google</h3>
-            <p className="text-xs text-slate-400 mt-1 max-w-xs">
-              Access your personalized celebration blueprints, sync event dossiers, and unlock Aura AI Co-Pilot.
+            <p className="text-xs text-neutral-400 mt-1 max-w-xs font-normal">
+              Sign in with your Google account to sync your celebration blueprint, unlock Aura AI, and manage RSVPs.
             </p>
           </div>
         </div>
 
-        {/* Primary Google Auth Button */}
-        <div className="space-y-3">
+        {errorMsg && (
+          <div className="mb-4 p-2.5 rounded-xl bg-rose-500/10 border border-rose-500/20 text-rose-300 text-xs text-center font-medium">
+            {errorMsg}
+          </div>
+        )}
+
+        {/* General Google Sign-In Form */}
+        <form onSubmit={handleSubmit} className="space-y-3.5">
+          <div>
+            <label className="block text-[11px] font-semibold text-neutral-300 uppercase tracking-wider mb-1">
+              Your Full Name
+            </label>
+            <div className="relative">
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => {
+                  setName(e.target.value);
+                  setErrorMsg('');
+                }}
+                placeholder="e.g. Alex Rivera"
+                className="w-full px-4 py-2.5 bg-neutral-900 border border-white/[0.08] rounded-2xl text-xs text-neutral-100 placeholder:text-neutral-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              />
+              <User className="absolute right-3.5 top-3 w-3.5 h-3.5 text-neutral-500" />
+            </div>
+          </div>
+
+          <div>
+            <label className="block text-[11px] font-semibold text-neutral-300 uppercase tracking-wider mb-1">
+              Google Account Email
+            </label>
+            <div className="relative">
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                  setErrorMsg('');
+                }}
+                placeholder="e.g. alex.rivera@gmail.com"
+                className="w-full px-4 py-2.5 bg-neutral-900 border border-white/[0.08] rounded-2xl text-xs text-neutral-100 placeholder:text-neutral-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              />
+              <Mail className="absolute right-3.5 top-3 w-3.5 h-3.5 text-neutral-500" />
+            </div>
+          </div>
+
           <button
-            onClick={() => handleSignIn(customName, customEmail)}
-            className="w-full py-3 px-4 bg-white hover:bg-slate-100 text-slate-800 font-semibold text-sm rounded-2xl shadow-lg flex items-center justify-center gap-3 transition transform active:scale-98"
+            type="submit"
+            className="w-full py-3 px-4 bg-white hover:bg-neutral-100 text-neutral-900 font-semibold text-xs rounded-full shadow-[0_0_20px_rgba(255,255,255,0.15)] flex items-center justify-center gap-2.5 transition transform active:scale-98 mt-2"
           >
-            <svg viewBox="0 0 48 48" className="w-5 h-5 shrink-0">
+            <svg viewBox="0 0 48 48" className="w-4 h-4 shrink-0">
               <path
                 fill="#EA4335"
                 d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
@@ -100,78 +166,62 @@ export const GoogleAuthModal: React.FC = () => {
                 d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
               />
             </svg>
-            <span>Continue as {customName} ({customEmail})</span>
+            <span>Continue with Google</span>
           </button>
+        </form>
 
-          {/* Account profile customization toggle */}
-          <div className="pt-2">
-            <div className="p-3 bg-slate-950/80 border border-slate-800 rounded-2xl space-y-2 text-xs">
-              <span className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-                Google Account Details
-              </span>
-              <div className="space-y-1.5">
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={customName}
-                    onChange={(e) => setCustomName(e.target.value)}
-                    placeholder="Full Name"
-                    className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-purple-500"
-                  />
-                  <User className="absolute right-2.5 top-2 w-3.5 h-3.5 text-slate-500" />
-                </div>
-                <div className="relative">
-                  <input
-                    type="email"
-                    value={customEmail}
-                    onChange={(e) => setCustomEmail(e.target.value)}
-                    placeholder="google.account@gmail.com"
-                    className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-xl text-xs text-slate-200 focus:outline-none focus:border-purple-500"
-                  />
-                  <Mail className="absolute right-2.5 top-2 w-3.5 h-3.5 text-slate-500" />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Advanced Google Client ID toggle */}
-          <div className="text-center pt-1">
-            <button
-              type="button"
-              onClick={() => setShowAdvanced(!showAdvanced)}
-              className="text-[11px] text-slate-400 hover:text-purple-300 underline inline-flex items-center gap-1"
-            >
-              <Settings className="w-3 h-3" />
-              <span>{showAdvanced ? 'Hide Client ID Setting' : 'Configure Custom Google Client ID (Optional)'}</span>
-            </button>
-          </div>
-
-          {showAdvanced && (
-            <form onSubmit={handleSaveClientId} className="p-3 bg-slate-950 border border-slate-800 rounded-2xl space-y-2 text-xs">
-              <label className="block text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                Google OAuth 2.0 Client ID
-              </label>
-              <input
-                type="text"
-                value={clientIdInput}
-                onChange={(e) => setClientIdInput(e.target.value)}
-                placeholder="XXXX.apps.googleusercontent.com"
-                className="w-full px-3 py-1.5 bg-slate-900 border border-slate-700 rounded-xl font-mono text-[11px] text-slate-200 focus:outline-none"
-              />
-              <button
-                type="submit"
-                className="w-full py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-xl text-xs font-semibold"
-              >
-                Save Client ID
-              </button>
-            </form>
-          )}
+        {/* 1-Click Demo Guest Option */}
+        <div className="pt-4 border-t border-white/[0.08] mt-4 text-center">
+          <span className="text-[10px] text-neutral-500 uppercase tracking-wider block mb-2 font-semibold">
+            Or quick demo sign-in
+          </span>
+          <button
+            type="button"
+            onClick={() => handleQuickDemoSignIn('Alex Rivera', 'alex.rivera@gmail.com')}
+            className="w-full py-2 px-3 bg-neutral-900 hover:bg-neutral-800 border border-white/[0.08] hover:border-white/[0.18] rounded-full text-xs text-neutral-300 font-medium flex items-center justify-center gap-2 transition"
+          >
+            <Sparkles className="w-3.5 h-3.5 text-purple-400" />
+            <span>Continue as Alex Rivera (Demo Account)</span>
+          </button>
         </div>
 
+        {/* Advanced Google Client ID toggle */}
+        <div className="text-center pt-3">
+          <button
+            type="button"
+            onClick={() => setShowAdvanced(!showAdvanced)}
+            className="text-[11px] text-neutral-400 hover:text-purple-300 underline inline-flex items-center gap-1 transition"
+          >
+            <Settings className="w-3 h-3" />
+            <span>{showAdvanced ? 'Hide Client ID Setting' : 'Configure Custom Google Client ID (Optional)'}</span>
+          </button>
+        </div>
+
+        {showAdvanced && (
+          <form onSubmit={handleSaveClientId} className="p-3 bg-neutral-900 border border-white/[0.08] rounded-2xl space-y-2 text-xs mt-2">
+            <label className="block text-[10px] font-bold text-neutral-400 uppercase tracking-wider">
+              Google OAuth 2.0 Client ID
+            </label>
+            <input
+              type="text"
+              value={clientIdInput}
+              onChange={(e) => setClientIdInput(e.target.value)}
+              placeholder="XXXX.apps.googleusercontent.com"
+              className="w-full px-3 py-1.5 bg-black/60 border border-white/[0.08] rounded-xl font-mono text-[11px] text-neutral-200 focus:outline-none"
+            />
+            <button
+              type="submit"
+              className="w-full py-1.5 bg-purple-600 hover:bg-purple-500 text-white rounded-full text-xs font-semibold transition"
+            >
+              Save Client ID
+            </button>
+          </form>
+        )}
+
         {/* Security Reassurance Footer */}
-        <div className="mt-6 pt-4 border-t border-slate-800 text-[11px] text-slate-500 flex items-center justify-center gap-1.5">
+        <div className="mt-4 pt-3 border-t border-white/[0.06] text-[10px] text-neutral-500 flex items-center justify-center gap-1.5">
           <ShieldCheck className="w-3.5 h-3.5 text-emerald-400" />
-          <span>Secured with Google Identity Services &amp; OAuth 2.0 PKCE</span>
+          <span>General Google Sign-In with OAuth 2.0 Client Isolation</span>
         </div>
       </div>
     </div>
