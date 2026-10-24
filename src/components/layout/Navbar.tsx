@@ -7,13 +7,17 @@ import {
   Printer,
   Settings,
   ChevronDown,
-  RotateCcw
+  RotateCcw,
+  LogOut,
+  UserCheck
 } from 'lucide-react';
 import { useEvent } from '../../context/EventContext';
+import { useAuth } from '../../context/AuthContext';
 import { PRESET_TEMPLATES } from '../../data/presetTemplates';
 import { exportEventToJSON, parseImportedJSON, printRunOfShow } from '../../services/exportService';
 import { ApiKeyModal } from '../ai/ApiKeyModal';
 import { EventSetupModal } from '../overview/EventSetupModal';
+import { GoogleAuthModal } from '../auth/GoogleAuthModal';
 
 export const Navbar: React.FC = () => {
   const {
@@ -28,9 +32,12 @@ export const Navbar: React.FC = () => {
     resetToBlank
   } = useEvent();
 
+  const { user, isAuthenticated, openAuthModal, signOut } = useAuth();
+
   const [isApiKeyOpen, setIsApiKeyOpen] = useState(false);
   const [isSetupOpen, setIsSetupOpen] = useState(false);
   const [isTemplateMenuOpen, setIsTemplateMenuOpen] = useState(false);
+  const [isUserMenuOpen, setIsUserMenuOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleExport = () => {
@@ -87,12 +94,12 @@ export const Navbar: React.FC = () => {
                 </span>
               </div>
               <p className="text-[11px] text-slate-400 hidden sm:block truncate max-w-xs">
-                Autonomous Celebration & Event Intelligence Engine
+                Autonomous Celebration &amp; Event Intelligence
               </p>
             </div>
           </div>
 
-          {/* Quick Preset Selector & Action Buttons */}
+          {/* Preset Selector, Actions & Google Sign-In */}
           <div className="flex items-center gap-2 sm:gap-3">
             {/* Template Selector Dropdown */}
             <div className="relative">
@@ -199,6 +206,83 @@ export const Navbar: React.FC = () => {
               <Sparkles className="w-3.5 h-3.5" />
               <span className="hidden md:inline">Gemini AI</span>
             </button>
+
+            {/* Google Sign-In / Account Dropdown */}
+            {isAuthenticated && user ? (
+              <div className="relative">
+                <button
+                  onClick={() => setIsUserMenuOpen(!isUserMenuOpen)}
+                  className="flex items-center gap-2 p-1 pl-2 bg-slate-900 hover:bg-slate-800 border border-slate-800 rounded-xl transition"
+                >
+                  <img
+                    src={user.picture}
+                    alt={user.name}
+                    className="w-6 h-6 rounded-lg object-cover border border-purple-500/40"
+                  />
+                  <span className="hidden sm:inline text-xs font-semibold text-slate-200 truncate max-w-[100px]">
+                    {user.givenName || user.name}
+                  </span>
+                  <ChevronDown className="w-3 h-3 text-slate-400" />
+                </button>
+
+                {isUserMenuOpen && (
+                  <div className="absolute right-0 mt-2 w-64 p-3 bg-slate-900 border border-slate-800 rounded-2xl shadow-2xl z-50 animate-in fade-in space-y-2">
+                    <div className="flex items-center gap-2.5 pb-2 border-b border-slate-800">
+                      <img
+                        src={user.picture}
+                        alt={user.name}
+                        className="w-9 h-9 rounded-xl object-cover border border-purple-500/40"
+                      />
+                      <div className="truncate">
+                        <div className="text-xs font-bold text-white truncate">{user.name}</div>
+                        <div className="text-[10px] text-slate-400 truncate">{user.email}</div>
+                      </div>
+                    </div>
+
+                    <div className="flex items-center gap-1.5 text-[10px] font-medium text-emerald-400 bg-emerald-950/30 px-2 py-1 rounded-lg border border-emerald-500/20">
+                      <UserCheck className="w-3 h-3" />
+                      <span>Verified Google Account</span>
+                    </div>
+
+                    <button
+                      onClick={() => {
+                        signOut();
+                        setIsUserMenuOpen(false);
+                      }}
+                      className="w-full text-left p-2 text-xs text-rose-400 hover:bg-rose-950/30 rounded-xl flex items-center gap-2 transition"
+                    >
+                      <LogOut className="w-3.5 h-3.5" />
+                      <span>Sign out</span>
+                    </button>
+                  </div>
+                )}
+              </div>
+            ) : (
+              <button
+                onClick={openAuthModal}
+                className="flex items-center gap-2 px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-800 text-xs font-semibold rounded-xl shadow-md transition transform active:scale-95"
+              >
+                <svg viewBox="0 0 48 48" className="w-4 h-4 shrink-0">
+                  <path
+                    fill="#EA4335"
+                    d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"
+                  />
+                  <path
+                    fill="#4285F4"
+                    d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"
+                  />
+                  <path
+                    fill="#FBBC05"
+                    d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"
+                  />
+                  <path
+                    fill="#34A853"
+                    d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"
+                  />
+                </svg>
+                <span className="hidden sm:inline">Sign in</span>
+              </button>
+            )}
           </div>
         </div>
       </header>
@@ -206,6 +290,7 @@ export const Navbar: React.FC = () => {
       {/* Modals */}
       <ApiKeyModal isOpen={isApiKeyOpen} onClose={() => setIsApiKeyOpen(false)} />
       <EventSetupModal isOpen={isSetupOpen} onClose={() => setIsSetupOpen(false)} />
+      <GoogleAuthModal />
     </>
   );
 };

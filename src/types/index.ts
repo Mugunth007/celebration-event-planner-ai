@@ -131,3 +131,14 @@ export interface BeveragePlan {
   signatureMocktail: string;
   signatureCocktail: string;
 }
+
+export interface GoogleUser {
+  id: string;
+  name: string;
+  email: string;
+  picture: string;
+  givenName?: string;
+  familyName?: string;
+  locale?: string;
+  signedInAt: string;
+}

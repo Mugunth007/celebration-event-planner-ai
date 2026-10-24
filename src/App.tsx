@@ -1,4 +1,5 @@
 import React from 'react';
+import { AuthProvider } from './context/AuthContext';
 import { EventProvider, useEvent } from './context/EventContext';
 import { Navbar } from './components/layout/Navbar';
 import { TabNavigation } from './components/layout/TabNavigation';
@@ -31,14 +32,16 @@ const MainContent: React.FC = () => {
 
 export function App() {
   return (
-    <EventProvider>
-      <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-purple-500 selection:text-white">
-        <Navbar />
-        <TabNavigation />
-        <MainContent />
-        <Footer />
-      </div>
-    </EventProvider>
+    <AuthProvider>
+      <EventProvider>
+        <div className="min-h-screen bg-slate-950 text-slate-100 flex flex-col font-sans selection:bg-purple-500 selection:text-white">
+          <Navbar />
+          <TabNavigation />
+          <MainContent />
+          <Footer />
+        </div>
+      </EventProvider>
+    </AuthProvider>
   );
 }
 
